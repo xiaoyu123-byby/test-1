@@ -1,31 +1,31 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class WeatherController : MonoBehaviour
 {
-    // ÌìÆøÀàĞÍ
+    // å¤©æ°”ç±»å‹
     public enum Weather { Sunny, Rainy, Foggy }
     public Weather currentWeather;
 
-    // ÏÂÓê
+    // ä¸‹é›¨
     public ParticleSystem rain;
 
-    // Îí
+    // é›¾
     private float normalFog;
-    [Header("ÎíÅ¨¶È£¨0.05~0.1×îºÏÊÊ£©")]
-    public float fogDensity = 0.08f;
+    [Header("é›¾æµ“åº¦ï¼ˆ0.05~0.1æœ€åˆé€‚ï¼‰")]
+    public float fogDensity = 0.01f;
 
     void Start()
     {
-        // ±£´æÔ­Ê¼ÎíÅ¨¶È
+        // ä¿å­˜åŸå§‹é›¾æµ“åº¦
         normalFog = RenderSettings.fogDensity;
 
-        // Ä¬ÈÏÇçÌì
+        // é»˜è®¤æ™´å¤©
         SetWeather(Weather.Sunny);
     }
 
     void Update()
     {
-        // °´¼üÇĞ»»
+        // æŒ‰é”®åˆ‡æ¢
         if (Input.GetKeyDown(KeyCode.Alpha1)) SetWeather(Weather.Sunny);
         if (Input.GetKeyDown(KeyCode.Alpha2)) SetWeather(Weather.Rainy);
         if (Input.GetKeyDown(KeyCode.Alpha3)) SetWeather(Weather.Foggy);
@@ -38,23 +38,25 @@ public class WeatherController : MonoBehaviour
         switch (weather)
         {
             case Weather.Sunny:
-                // Í£Óê
+                // åœé›¨
                 if (rain != null && rain.isPlaying) rain.Stop();
-                // ¹ØÎí
+                // å…³é›¾ âœ… ä¿®å¤è¿™é‡Œ
+                RenderSettings.fog = false;
                 RenderSettings.fogDensity = 0;
                 break;
 
             case Weather.Rainy:
-                // ÏÂÓê
+                // ä¸‹é›¨
                 if (rain != null && !rain.isPlaying) rain.Play();
-                // ¹ØÎí
+                // å…³é›¾ âœ… ä¿®å¤è¿™é‡Œ
+                RenderSettings.fog = false;
                 RenderSettings.fogDensity = 0;
                 break;
 
             case Weather.Foggy:
-                // Í£Óê
+                // åœé›¨
                 if (rain != null && rain.isPlaying) rain.Stop();
-                // ¿ªÎí
+                // å¼€é›¾
                 RenderSettings.fog = true;
                 RenderSettings.fogDensity = fogDensity;
                 break;
