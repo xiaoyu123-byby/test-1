@@ -1,60 +1,32 @@
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
+using UnityStandardAssets.Water;
 
 [CustomEditor(typeof(PlanarReflection))]
-public class PlanarReflectionEditor : Editor 
-{    
+public class PlanarReflectionEditor : Editor
+{
     private SerializedObject serObj;
-    
-    //private SerializedProperty wavesFrequency;
-    
-	// reflection
-	private SerializedProperty reflectionMask;
-	private SerializedProperty reflectSkybox;
-	private SerializedProperty clearColor;
+    private SerializedProperty textureSize;
+    private SerializedProperty clipPlaneOffset;
+    private SerializedProperty reflectionPlane;
+    private SerializedProperty reflectionCamera;
 
-	bool showKidsWithReflectionHint = false;
-    
-	public void OnEnable () {
-		serObj = new SerializedObject (target); 
-		
-		reflectionMask = serObj.FindProperty("reflectionMask");   		
-		reflectSkybox = serObj.FindProperty("reflectSkybox");   		
-		clearColor = serObj.FindProperty("clearColor");   		
-	}
-	
-    public override void OnInspectorGUI () 
+    void OnEnable()
     {
-        GUILayout.Label ("Render planar reflections and use GrabPass for refractions", EditorStyles.miniBoldLabel);    	
-    	
-		if(!SystemInfo.supportsRenderTextures)
-			EditorGUILayout.HelpBox("Realtime reflections not supported", MessageType.Warning);	
-		
-    	serObj.Update();
-    	
-    	EditorGUILayout.PropertyField(reflectionMask, new GUIContent("Reflection layers"));
-    	EditorGUILayout.PropertyField(reflectSkybox, new GUIContent("Use skybox"));
-		EditorGUILayout.PropertyField(clearColor, new GUIContent("Clear color"));
-
-        showKidsWithReflectionHint = EditorGUILayout.BeginToggleGroup("Show all tiles", showKidsWithReflectionHint);
-        if (showKidsWithReflectionHint) {
-        	int i = 0;
-        	foreach(Transform t in ((PlanarReflection)target).transform) {
-        		if (t.GetComponent<WaterTile>())	{
-        			if(i%2==0)
-        				EditorGUILayout.BeginHorizontal();
-        			EditorGUILayout.ObjectField(t, typeof(Transform), true);
-        			if(i%2==1)
-        				EditorGUILayout.EndHorizontal();        			
-        			i = (i+1)%2;
-        		}
-        	}	
-        	if(i>0)
-				EditorGUILayout.EndHorizontal();        			        		
-        }
-        EditorGUILayout.EndToggleGroup();		
-    	
-    	serObj.ApplyModifiedProperties();
+        serObj = new SerializedObject(target);
+        textureSize = serObj.FindProperty("textureSize");
+        clipPlaneOffset = serObj.FindProperty("clipPlaneOffset");
+        reflectionPlane = serObj.FindProperty("reflectionPlane");
+        reflectionCamera = serObj.FindProperty("reflectionCamera");
     }
-    
+
+    public override void OnInspectorGUI()
+    {
+        serObj.Update();
+        EditorGUILayout.PropertyField(textureSize, new GUIContent("Texture Size"));
+        EditorGUILayout.PropertyField(clipPlaneOffset, new GUIContent("Clip Plane Offset"));
+        EditorGUILayout.PropertyField(reflectionPlane, new GUIContent("Reflection Plane"));
+        EditorGUILayout.PropertyField(reflectionCamera, new GUIContent("Reflection Camera"));
+        serObj.ApplyModifiedProperties();
+    }
 }

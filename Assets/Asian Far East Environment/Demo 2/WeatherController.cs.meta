@@ -3,7 +3,12 @@ guid: adfef53d877cdf84a8e75904551edb3c
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - rain: {instanceID: 0}
+  - sunLight: {instanceID: 0}
+  - floorParent: {instanceID: 0}
+  - terrain: {instanceID: 0}
+  - wetMaterial: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
